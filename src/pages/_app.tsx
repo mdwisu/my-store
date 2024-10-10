@@ -2,6 +2,7 @@ import Navbar from "@/components/layouts/Navbar";
 import "@/styles/globals.css";
 import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
+import Head from "next/head";
 
 // Fonts
 import { Lato } from "next/font/google";
@@ -18,6 +19,12 @@ export default function App({
 }: AppProps) {
   return (
     <SessionProvider session={session}>
+      <Head>
+        <link
+          href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+          rel="stylesheet"
+        ></link>
+      </Head>
       <div className={lato.className}>
         <Navbar />
         <Component {...pageProps} />;

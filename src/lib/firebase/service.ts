@@ -13,19 +13,17 @@ import bcrypt from "bcrypt";
 
 const firestore = getFirestore(app);
 
-export async function retriveData(collectionName: string) {
+export async function retrieveData(collectionName: string) {
   const snapshot = await getDocs(collection(firestore, collectionName));
   const data = snapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
-  }));
-  return data;
+   }));
 }
 
-export async function retriveDataById(collectionName: string, id: string) {
+export async function retrieveDataById(collectionName: string, id: string) {
   const snapshot = await getDoc(doc(firestore, collectionName, id));
-  const data = snapshot.data();
-  return data;
+   const data = snapshot.data();
 }
 
 export async function signUp(
@@ -72,14 +70,33 @@ export async function signIn(email: string, password: string) {
     id: doc.id,
     ...doc.data(),
   }));
+
   if (data.length > 0) {
     const user: any = data[0];
     if (await bcrypt.compare(password, user.password)) {
-      return user;
-    } else {
-      return null;
+    }  else {
     }
-  } else {
-    return null;
+  }  else {
+  }
+}
+
+export async function loginWithGoogle(data: any, callback: Function) {
+  const q = query(collection(firestore, "users"), where("email", "==", data.email));
+  const snapshot = await getDocs(q);
+  const user = snapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+  if (user.length > 0) {
+    callback(user[0]);
+  }else{
+    data.role = "member";
+    await addDoc(collection(firestore, "users"), data)
+      .then(() => {
+        callback(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 }
