@@ -1,10 +1,11 @@
+import Navbar from "@/components/layouts/Navbar";
 import "@/styles/globals.css";
 import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 
 // Fonts
 import { Lato } from "next/font/google";
-const lato = Lato({ 
+const lato = Lato({
   subsets: ["latin"],
   weight: ["100", "300", "400", "700", "900"],
   variable: "--font-lato",
@@ -18,6 +19,7 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <div className={lato.className}>
+        <Navbar />
         <Component {...pageProps} />;
       </div>
     </SessionProvider>
