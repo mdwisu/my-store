@@ -1,8 +1,8 @@
 import NextAuth, { AuthOptions } from "next-auth";
-import { loginWithGoogle, signIn } from "@/lib/firebase/service";
 import CredentialProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { compare } from "bcrypt";
+import { loginWithGoogle, signIn } from "@/services/auth";
 
 export const authOptions: AuthOptions = {
   session: {
@@ -29,7 +29,7 @@ export const authOptions: AuthOptions = {
           password: string;
         };
 
-        const user: any = await signIn(email, password);
+        const user: any = await signIn(email);
 
         if (user) {
           const passwordConfirm = await compare(password, user.password);
